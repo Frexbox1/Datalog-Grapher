@@ -74,7 +74,7 @@ class DynamicPlot:
         return color_map
 
     def setup_plot(self):
-        self.fig, self.ax = plt.subplots(figsize=(15, 6))
+        self.fig, self.ax = plt.subplots(figsize=(15, 8))
         self.ax.set_title("2025-01-10_18.47.52_log")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Value")
@@ -259,11 +259,12 @@ class DynamicPlot:
 
 
 if __name__ == "__main__":
-    # Define the columns you want to display
     columns_to_display = [
         "Pedal(wped_w)(% PED)",
         "Eng spd(nmot_w)(1/min)",
+        "Gear(gangi)()",
         "Temp charge air(tans)(Grad C)",
+        "Temp coolant(tmot)(Grad C)",
         "Ign #1(zwcalcar)(Grad KW)",
         "Ign #2(zwcalcar_2)(Grad KW)",
         "Ign #3(zwcalcar_3)(Grad KW)",
@@ -273,9 +274,14 @@ if __name__ == "__main__":
         "Lambda STFT(frm_w)(-)",
         "HPF act unfilt(prroh_w)(MPa)",
         "HPF tgt(prsoll_w)(MPa)",
+        "LPF tgt(pbksoll_w)(kPa)",
+        "LPF act(pbkist_w)(kPa)",
         "Pres pre throt(pvdg1_w)(hPa)",
         "Pres tgt before throt(pvds_w)(hPa)",
         "Pres tgt max(pvdxs_w)(hPa)",
+        "WGDC(tvldste_w)(%)",
+        "Mass flow(msdkhfs_w)(kg/h)",
+        "Ethanol cont(ethanolpercent)(%)"
     ]
 
 
