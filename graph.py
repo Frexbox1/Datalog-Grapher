@@ -90,32 +90,28 @@ class DynamicPlot:
 
     def plot_data(self):
 
-        self.uses_symlog = False  # Flag to track if symlog is used
+        self.uses_symlog = False
 
-        # Check for negative values in any of the columns
         if self.log_scale and self.df[self.columns_to_display].lt(0).any().any():
             # If negative values are present and log_scale is True, use symlog
             self.uses_symlog = True
-            self.linthresh = 10  # Define a threshold for linear scaling near zero
+            self.linthresh = 10
             self.ax.set_yscale('symlog', linthresh=self.linthresh)
+
         elif self.log_scale:
-            # If no negative values, use standard log scale
             self.ax.set_yscale('log')
+
         else:
-            # Use linear scale
             self.ax.set_yscale('linear')
 
-        # Apply the y-axis formatter
         self.apply_yaxis_formatter()
 
         for col in self.columns_to_display:
             self.ax.plot(self.df["Time(s)"], self.df[col], color=self.color_map[col], label=col, linewidth=2)
 
-        # Set y-axis limits based on data
         if self.uses_symlog:
             y_min = self.df[self.columns_to_display].min().min()
             y_max = self.df[self.columns_to_display].max().max()
-            # To ensure symlog handles negative and positive extremes
             self.ax.set_ylim(y_min * 1.1 if y_min < 0 else y_min * 0.9,
                              y_max * 1.1)
         else:
@@ -123,10 +119,9 @@ class DynamicPlot:
             y_max = self.df[self.columns_to_display].max().max() * 1.1
             self.ax.set_ylim(y_min, y_max)
 
-        # Set x-axis limits based on Time(s) data
         x_min = self.df["Time(s)"].min()
         x_max = self.df["Time(s)"].max()
-        self.ax.set_xlim(x_min, x_max)  # Explicitly set the x-axis limits
+        self.ax.set_xlim(x_min, x_max)
         self.ax.grid(linestyle='none')
 
 
@@ -134,52 +129,42 @@ class DynamicPlot:
         # Create format string based on desired decimals
         format_str = f"{{value:10.{decimals}f}}"
         txt = f"{format_str.format(value=value)}"
-        # Now pad to fixed width:
         return txt.ljust(width)
 
     def make_row(self, label, color):
-        # 1) Create the circle patch
         patch_area = DrawingArea(20, 20)
         circle = Circle((10, 10), 5, facecolor=color, edgecolor="none")
         patch_area.add_artist(circle)
 
-        # 2) Create the label TextArea with padding
-        # Clean the label to remove units or special characters
         clean_label = re.sub(r'\(.*?\)', '', label).strip()  # Removes anything in parentheses
-        clean_label = f"{clean_label} = "  # Add equal sign
         clean_label = clean_label.ljust(self.max_label_length)  # Pad to fixed width
 
         label_text = TextArea(clean_label, textprops={
             "ha": "left",
-            # "va": "center",  # Commented out to fix alignment issue
             "family": "DejaVu Sans Mono",
             "fontsize": self.data_fontsize
         })
 
-        # 3) Create the value TextArea (initially empty)
         value_text = TextArea("", textprops={
             "ha": "right",
-            # "va": "center",  # Commented out to fix alignment issue
             "family": "DejaVu Sans Mono",
             "fontsize": self.data_fontsize
         })
 
-        # 4) Combine label and value into a single TextArea
         combined_text = HPacker(
             children=[label_text, value_text],
             pad=0,
             sep=5,
-            align="center",  # Ensures horizontal alignment
-            mode="fixed"     # Ensures the value does not expand
+            align="center",
+            mode="fixed"
         )
 
-        # 5) Combine circle and combined_text in a single HPacker
         row_box = HPacker(
             children=[patch_area, combined_text],
             pad=0,
             sep=5,
-            align="center",  # Ensures alignment similar to functional code
-            mode="fixed"     # Ensures the circle remains fixed and doesn't shift
+            align="center",
+            mode="fixed"
         )
 
         return row_box, value_text
@@ -199,17 +184,16 @@ class DynamicPlot:
             pad=0,
             sep=0,
             align="baseline",
-            mode="fixed"  # Ensures all rows have the same total width and do not expand
+            mode="fixed"
         )
 
-        # Put them in an AnnotationBbox placed outside the main axes
         self.box_ab = AnnotationBbox(
             vbox,
-            xy=(1.02, 0.5),            # Position: slightly outside the axes to the right, vertically centered
+            xy=(1.02, 0.5),            
             xycoords=self.ax.transAxes,     
-            box_alignment=(0, 0.5),    # Align the left edge of the box to x=1.02
+            box_alignment=(0, 0.5),    
             frameon=True,
-            pad=0.5                     # Padding as per functional code
+            pad=0.5
         )
         self.ax.add_artist(self.box_ab)
 
@@ -242,7 +226,6 @@ class DynamicPlot:
             formatted_value = self.format_value(value, width=1, decimals=2)  # Removed label
             value_text.set_text(formatted_value)
 
-        # Make sure the annotation box is visible
         self.box_ab.set_visible(True)
         self.fig.canvas.draw_idle()
 
@@ -252,9 +235,6 @@ class DynamicPlot:
         self.fig.canvas.mpl_connect("motion_notify_event", self.on_mouse_move)
 
     def run(self):
-        """
-        Displays the plot.
-        """
         plt.show()
 
 
@@ -292,4 +272,5 @@ if __name__ == "__main__":
         data_fontsize=10,
         log_scale=True
     )
+    
     plot_instance.run()
