@@ -260,6 +260,8 @@ if __name__ == "__main__":
         "Pres tgt before throt(pvds_w)(hPa)",
         "Pres tgt max(pvdxs_w)(hPa)",
         "WGDC(tvldste_w)(%)",
+        "Lambda act(lamsoni_w)(-)",
+        "Lambda setpoint(lamsbg_w)(-)",
         "Mass flow(msdkhfs_w)(kg/h)",
         "Ethanol cont(ethanolpercent)(%)"
     ]
