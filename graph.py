@@ -75,7 +75,7 @@ class DynamicPlot:
 
     def setup_plot(self):
         self.fig, self.ax = plt.subplots(figsize=(15, 8))
-        self.ax.set_title("Datalog")
+        self.ax.set_title(self.csv_file)
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Value")
         self.ax.grid(True)
