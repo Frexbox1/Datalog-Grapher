@@ -75,7 +75,7 @@ class DynamicPlot:
 
     def setup_plot(self):
         self.fig, self.ax = plt.subplots(figsize=(15, 8))
-        self.ax.set_title("2025-01-10_18.47.52_log")
+        self.ax.set_title("Datalog")
         self.ax.set_xlabel("Time (s)")
         self.ax.set_ylabel("Value")
         self.ax.grid(True)
@@ -256,6 +256,7 @@ if __name__ == "__main__":
         "HPF tgt(prsoll_w)(MPa)",
         "LPF tgt(pbksoll_w)(kPa)",
         "LPF act(pbkist_w)(kPa)",
+        "LPF duty final(PSP_rPs)(%)",
         "Pres pre throt(pvdg1_w)(hPa)",
         "Pres tgt before throt(pvds_w)(hPa)",
         "Pres tgt max(pvdxs_w)(hPa)",
@@ -268,11 +269,11 @@ if __name__ == "__main__":
 
 
     plot_instance = DynamicPlot(
-        csv_file="2025-01-10_18.47.52_log.csv",
+        csv_file="rev3.csv",
         columns_to_display=columns_to_display,
         skip_header_rows=1,
         data_fontsize=10,
-        log_scale=True
+        log_scale=False
     )
 
     plot_instance.run()
